@@ -34,7 +34,12 @@ export default class Lexer {
     this.skipWhitespace();
     switch (this.ch) {
       case "=":
-        token = new Token(TOKEN_TYPE.ASSIGN, this.ch);
+        if (this.peekChar() === "=") {
+          this.readChar();
+          token = new Token(TOKEN_TYPE.EQ, "==");
+        } else {
+          token = new Token(TOKEN_TYPE.ASSIGN, this.ch);
+        }
         break;
       case "+":
         token = new Token(TOKEN_TYPE.PLUS, this.ch);
@@ -43,7 +48,12 @@ export default class Lexer {
         token = new Token(TOKEN_TYPE.MINUS, this.ch);
         break;
       case "!":
-        token = new Token(TOKEN_TYPE.BANG, this.ch);
+        if (this.peekChar() === "=") {
+          this.readChar();
+          token = new Token(TOKEN_TYPE.NOT_EQ, "!=");
+        } else {
+          token = new Token(TOKEN_TYPE.BANG, this.ch);
+        }
         break;
       case "/":
         token = new Token(TOKEN_TYPE.SLASH, this.ch);
